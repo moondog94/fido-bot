@@ -4,6 +4,8 @@
   "description": "Fantastic Intelligent Dog OS",
   "main": "fido.js",
   "scripts": {
+    "watch": "nodemon ./fido.js --ignore public/",
+    "start": "concurrently \"npm run watch\" --names \"💻,📦\" --prefix name",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -12,5 +14,12 @@
     "bot"
   ],
   "author": "Jack Mooney",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^3.4.0",
+    "discord.js": "^11.1.0",
+    "dotenv": "^4.0.0",
+    "nodemon": "^1.11.0",
+    "path": "^0.12.7"
+  }
 }
