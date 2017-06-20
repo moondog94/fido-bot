@@ -1,0 +1,16 @@
+{
+  "name": "fido-bot",
+  "version": "0.0.1",
+  "description": "Fantastic Intelligent Dog OS",
+  "main": "fido.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "discord",
+    "fido",
+    "bot"
+  ],
+  "author": "Jack Mooney",
+  "license": "ISC"
+}
