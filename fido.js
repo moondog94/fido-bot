@@ -1,12 +1,63 @@
+// Make sure we are running node 7.6+ (Thanks Wes Bos)
+const [major, minor] = process.versions.node.split('.').map(parseFloat);
+if (major < 7 || (major === 7 && minor <= 5)) {
+  console.log('⛔️ 🌮 🐶 💪 💩\nHey You! \n\t ya you! \n\t\tBuster! \n\tYou\'re on an older version of node that doesn\'t support the latest and greatest things (Async + Await)! Please go to nodejs.org and download version 7.6 or greater. 👌\n ');
+  process.exit();
+}
+
+//Set environtment variables in variables.env
+//YOU MUST PROVIDE YOUR OWN. DO NOT SHARE API KEYS!
+require('dotenv').config({ path: 'variables.env' });
+
+/*
+//Database and Model setup will be here if required
+const mongoose = require('mongoose')
+etc.....
+*/
+
+//Get discord.js and login to FIDO
 const Discord = require('discord.js');
 const client = new Discord.Client();
 
-require('dotenv').config({ path: 'variables.env' });
+/*
+	Rules/Commands for Fido
+*/
 
+const commandController = require('./controllers/commandController');
+
+//When FIDO is ready to work, let us know! c:
 client.on('ready', () => {
 	console.log('I am ready');
 });
 
+//Handle message
+client.on('message', message => {
+	const msg = message.content; //Get message string
+
+	if(msg) {
+		//Ignore all other bots. No skynet.
+		if (message.author.bot) return;
+
+		//Split up message
+		const mess = msg.split(' ');
+
+		//Check if the message if my command prefix "!fetch"
+		if(mess[0] === '!fetch') {
+			if(mess.length <= 1) {
+				commandController.displayHelp(message);
+				return;
+			}
+
+			//Get commands and it's parameters
+			const cmd = mess[1];
+			const params = mess.splice(2);
+
+			commandController.handleCmd(message,cmd,params);
+		}
+	}
+});
+
+//Basic ping command
 client.on('message', message => {
 	if (message.content === 'ping') {
 		message.reply('pong');
@@ -15,4 +66,6 @@ client.on('message', message => {
 
 
 
+
+//Now that we have taken care of our 'rules'. Login In!
 client.login(process.env.DISCORD_KEY);
