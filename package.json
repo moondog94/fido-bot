@@ -19,7 +19,11 @@
     "concurrently": "^3.4.0",
     "discord.js": "^11.1.0",
     "dotenv": "^4.0.0",
+    "es6-promisify": "^5.0.0",
+    "exists-file": "^3.0.1",
+    "file-exists": "^4.0.0",
     "nodemon": "^1.11.0",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "path-exists": "^3.0.0"
   }
 }

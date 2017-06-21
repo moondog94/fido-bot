@@ -30,7 +30,7 @@ client.on('ready', () => {
 	console.log('I am ready');
 });
 
-//Handle message
+//Handle commands
 client.on('message', message => {
 	const msg = message.content; //Get message string
 
@@ -43,8 +43,8 @@ client.on('message', message => {
 
 		//Check if the message if my command prefix "!fetch"
 		if(mess[0] === '!fetch') {
-			if(mess.length <= 1) {
-				commandController.displayHelp(message);
+			if(mess.length <= 1) { //default to help
+				commandController.handleCmd(message);
 				return;
 			}
 
@@ -57,14 +57,15 @@ client.on('message', message => {
 	}
 });
 
-//Basic ping command
+//Handle 'Who/What are you?' mentions
 client.on('message', message => {
-	if (message.content === 'ping') {
-		message.reply('pong');
-	}
+	if(!message.isMentioned(client.user)) return; //Skip if not spoken directly to
+
+	const reply = 'Hello! I am the **F**lawless **I**ntelligent **D**og **O**S, but you can call me Fido! I can fetch anything for you from the web. For more information, just use the command `!fetch help`. :dog:'
+	message.reply(reply)
+
+
 });
-
-
 
 
 //Now that we have taken care of our 'rules'. Login In!
