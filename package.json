@@ -13,6 +13,9 @@
     "fido",
     "bot"
   ],
+  "engines": {
+  	"node": "8.x"
+  },
   "author": "Jack Mooney",
   "license": "ISC",
   "dependencies": {
@@ -28,4 +31,5 @@
     "path": "^0.12.7",
     "path-exists": "^3.0.0"
   }
+
 }
