@@ -12,12 +12,13 @@ class List extends Command {
 		const files = await readdir(__dirname).catch(err => {
 			return "UH-OH SOMETHING WENT WRONG"
 		});
-		let res = '```\n';
+		let res = '```md\n';
 		files
 		.filter(file => {
 			return file !== 'command.js'
 		})
 		.map(file => {
+			console.log(file)
 			return file.slice(0,-3)
 		})
 		.forEach(file => {

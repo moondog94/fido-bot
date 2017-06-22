@@ -25,6 +25,9 @@ const client = new Discord.Client();
 
 const commandController = require('./controllers/commandController');
 
+//Get Giphy api
+const giphy = require('giphy-api')(process.env.GIPHY_KEY);
+
 //When FIDO is ready to work, let us know! c:
 client.on('ready', () => {
 	console.log('I am ready');
@@ -52,6 +55,14 @@ client.on('message', message => {
 			const cmd = mess[1];
 			const params = mess.splice(2);
 
+			//Special case of stick :P
+			if(cmd === 'stick'){
+				giphy.random('fetch stick dog')
+					.then(res => message.reply(res.data.url));
+				//console.log(stick);
+				return; //We're done with this one
+			}
+
 			commandController.handleCmd(message,cmd,params);
 		}
 	}
@@ -60,6 +71,13 @@ client.on('message', message => {
 //Handle 'Who/What are you?' mentions
 client.on('message', message => {
 	if(!message.isMentioned(client.user)) return; //Skip if not spoken directly to
+
+	if(message.content.match(/\b(good (?:boy|dog|girl)|thank(s?)( you)?(!*))\b/gi)){
+		giphy.random('happy dog')
+			.then(res => message.reply(res.data.url));
+
+		return;
+	}
 
 	const reply = 'Hello! I am the **F**lawless **I**ntelligent **D**og **O**S, but you can call me Fido! I can fetch anything for you from the web. For more information, just use the command `!fetch help`. :dog:'
 	message.reply(reply)
