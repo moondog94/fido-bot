@@ -7,7 +7,7 @@ const displaySources = async () => {
 	const sources = await news.sources({
 		language: 'en'
 	});
-	let res = '**Usage:** `!fetch news <source-id>`\nIt seems you didn\'t give me source. Here\'s all the available source:\n\n';
+	let res = '**Usage:** `!fetch news <source-id>`\nIt seems you didn\'t give me a source or an invalid source. Here\'s all the available source:\n\n';
 	sources.sources.forEach(source => {
 		res += `${source.name}:\t\`${source.id}\`\n`
 	})
@@ -31,6 +31,8 @@ class News extends Command {
 		if(this.params.length <= 0)	return displaySources();
 		
 		const articles = await news.articles({source: this.params[0], sortBy: 'top'});
+		if(articles.code && articles.code === 'sourceDoesntExist')
+			return displaySources();
 		const source = await getSourceName(articles.source);
 
 		console.log(source);
