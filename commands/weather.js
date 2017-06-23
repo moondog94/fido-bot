@@ -2,7 +2,7 @@ const Command = require('./command');
 const openWeather = require('openweather-apis');
 const promisify = require('es6-promisify');
 const googleMapsClient = require('@google/maps').createClient({
-	key: 'AIzaSyDhFQWvekZuz1bJ8n85HL_LLdDDQjtDnnM'
+	key: process.env.GOOGLE_MAPS_KEY
 });
 
 //Set up weather
