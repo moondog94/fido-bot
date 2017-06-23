@@ -1,6 +1,12 @@
 Fido - (**F**lawless **I**ntelligent **D**og **O**S)
 ================================================================
 
+Requirements
+------------
+* Latest version of [Node](https://nodejs.org/en/)
+* Latest version of `npm`
+
+
 Installation
 ------------
 
