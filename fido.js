@@ -79,6 +79,11 @@ client.on('message', message => {
 		return;
 	}
 
+	if(message.content.toLowerCase().indexOf('who is your master') !== -1) {
+		message.reply('My master is Moondog94! Check him out! https://github.com/moondog94')
+		return;
+	}
+
 	const reply = 'Hello! I am the **F**lawless **I**ntelligent **D**og **O**S, but you can call me Fido! I can fetch anything for you from the web. For more information, just use the command `!fetch help`. :dog:'
 	message.reply(reply)
 
