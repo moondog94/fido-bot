@@ -36,7 +36,9 @@
     "path": "^0.12.7",
     "path-exists": "^3.0.0",
     "relevant-xkcd": "^1.1.1",
+    "request-promise": "^4.2.1",
     "scrape-it": "^3.3.2",
-    "tinyreq": "^3.2.2"
+    "tinyreq": "^3.2.2",
+    "twitter": "^1.7.1"
   }
 }
