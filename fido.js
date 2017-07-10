@@ -211,6 +211,7 @@ client.on('message', message => {
 
 //Handle 'Who/What are you?' mentions
 client.on('message', message => {
+	if(message.author.bot) return
 	if(!message.isMentioned(client.user)) return; //Skip if not spoken directly to
 
 	if(message.content.match(/\b(good (?:boy|dog|girl)|thank(s?)( you)?(!*))\b/gi)){
@@ -227,6 +228,7 @@ client.on('message', message => {
 
 	if(message.content.toLowerCase().indexOf('new') !== -1) {
 		message.reply('OH YEAH! I can remember your certain account usernames so you don\'t have to input everytime for future commands. Just DM me and type `help` for more info. :dog:')
+		return;
 	}
 
 	const reply = 'Hello! I am the **F**lawless **I**ntelligent **D**og **O**S, but you can call me Fido! I can fetch anything for you from the web. For more information, just use the command `!fetch help`. :dog:'
