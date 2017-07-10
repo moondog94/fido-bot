@@ -225,6 +225,10 @@ client.on('message', message => {
 		return;
 	}
 
+	if(message.content.toLowerCase().indexOf('new') !== -1) {
+		message.reply('OH YEAH! I can remember your certain account usernames so you don\'t have to input everytime for future commands. Just DM me and type `help` for more info. :dog:')
+	}
+
 	const reply = 'Hello! I am the **F**lawless **I**ntelligent **D**og **O**S, but you can call me Fido! I can fetch anything for you from the web. For more information, just use the command `!fetch help`. :dog:'
 	message.reply(reply)
 
