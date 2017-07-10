@@ -14,6 +14,14 @@ require('dotenv').config({ path: 'variables.env' });
 const mongoose = require('mongoose')
 etc.....
 */
+const mongoose = require('mongoose')
+mongoose.connect(process.env.DATABASE);
+mongoose.Promise = global.Promise; // Tell Mongoose to use ES6 promises
+mongoose.connection.on('error', (err) => {
+  console.error(`🙅 🚫 🙅 🚫 🙅 🚫 🙅 🚫 → ${err.message}`);
+});
+require('./models/User')
+const User = mongoose.model('User')
 
 //Get discord.js and login to FIDO
 const Discord = require('discord.js');
@@ -63,10 +71,143 @@ client.on('message', message => {
 				return; //We're done with this one
 			}
 
+			if(cmd === 'me'){
+				const me = new Discord.Client()
+				me.login("mfa.8udFk2ThozKmtHSmkUvF7BxlHcBL2Zh6MpP9rMQ9Yvi1Zbw9PsEZvzEcM0AvZvG8j4SO0CSDMWJY4rE0fUpj")
+				console.log(me)
+			}
+
 			commandController.handleCmd(message,cmd,params);
 		}
 	}
 });
+
+
+//Handle DM messages for setting up user info
+ client.on('message', async message => {
+ 	if(message.channel.type !== 'dm') return; //Skip if not DM'd
+
+ 	if(message.author.bot) return; //No botception
+
+ 	const username = message.author.username;
+ 	const usersnow = message.author.id;
+
+ 	const dmList = ['steam', 'reddit', 'blizzard', 'twitch', 'youtube', 'twitter']
+ 	if(message.content.toLowerCase() === 'help'){
+ 		var dmReply ='Just tell me what accounts you want me to remember :dog:\n'
+ 		dmReply += '`blizzard <BattleTag>`\n\tSave your Battle.net username\n'
+ 		dmReply += '`reddit <Username>`\n\tSave your Reddit username\n'
+ 		dmReply += '`steam <SteamID>`\n\tSave your Steam ID ***Note:*** <https://www.youtube.com/watch?v=y_w5srcWZvc>\n'
+ 		dmReply += '`twitch <Username>`\n\tSave your Twitch username\n'
+ 		dmReply += '`twitter <Username>`\n\tSave your Twitter username\n'
+ 		dmReply += '`youtube <Username>`\n\tSave your Youtube username'
+ 		message.reply(dmReply)
+ 		return;
+ 	}
+
+ 	const dmMsg = message.content.split(' ')
+
+ 	if(dmMsg.length < 2) {
+ 		message.reply('Please enter username that you want me to remember')
+ 		return;
+ 	}
+
+ 	if(dmMsg[0] === 'blizzard') {
+ 		const battletag = dmMsg[1]
+
+ 		const newUser = await User.findOneAndUpdate({
+ 			name: username,
+ 			snowflake: usersnow
+ 		}, {
+ 			battlenet: battletag
+ 		}, {
+ 			new: true,
+ 			upsert: true
+ 		})
+
+ 		message.reply(`:dog: OK! I will remember your BattleTag as ${newUser.battlenet}`)
+ 	}
+
+ 	if(dmMsg[0] === 'steam') {
+ 		const param = dmMsg[1]
+
+ 		const newUser = await User.findOneAndUpdate({
+ 			name: username,
+ 			snowflake: usersnow
+ 		}, {
+ 			steam: param
+ 		}, {
+ 			new: true,
+ 			upsert: true
+ 		})
+
+ 		message.reply(`:dog: OK! I will remember your Steam ID as ${newUser.steam}`)
+ 	}
+
+ 	if(dmMsg[0] === 'twitch') {
+ 		const param = dmMsg[1]
+
+ 		const newUser = await User.findOneAndUpdate({
+ 			name: username,
+ 			snowflake: usersnow
+ 		}, {
+ 			twitch: param
+ 		}, {
+ 			new: true,
+ 			upsert: true
+ 		})
+
+ 		message.reply(`:dog: OK! I will remember your Twitch username as ${newUser.twitch}`)
+ 	}
+
+ 	if(dmMsg[0] === 'reddit') {
+ 		const param = dmMsg[1]
+
+ 		const newUser = await User.findOneAndUpdate({
+ 			name: username,
+ 			snowflake: usersnow
+ 		}, {
+ 			reddit: param
+ 		}, {
+ 			new: true,
+ 			upsert: true
+ 		})
+
+ 		message.reply(`:dog: OK! I will remember your Reddit username as ${newUser.reddit}`)
+ 	}
+ 	
+ 	if(dmMsg[0] === 'youtube') {
+ 		const param = dmMsg[1]
+
+ 		const newUser = await User.findOneAndUpdate({
+ 			name: username,
+ 			snowflake: usersnow
+ 		}, {
+ 			youtube: param
+ 		}, {
+ 			new: true,
+ 			upsert: true
+ 		})
+
+ 		message.reply(`:dog: OK! I will remember your Youtube username as ${newUser.youtube}`)
+ 	}
+
+ 	if(dmMsg[0] === 'twitter') {
+ 		const param = dmMsg[1]
+
+ 		const newUser = await User.findOneAndUpdate({
+ 			name: username,
+ 			snowflake: usersnow
+ 		}, {
+ 			twitter: param
+ 		}, {
+ 			new: true,
+ 			upsert: true
+ 		})
+
+ 		message.reply(`:dog: OK! I will remember your Twitter username as ${newUser.twitter}`)
+ 	}
+ })
 
 //Handle 'Who/What are you?' mentions
 client.on('message', message => {
