@@ -1,5 +1,6 @@
 const pathExists = require('file-exists');
-
+const mongoose = require('mongoose')
+const User = mongoose.model('User')
 
 exports.handleCmd = async (message,cmd='help',params=[]) => {
 	let cmdClass;
@@ -40,7 +41,19 @@ exports.handleCmd = async (message,cmd='help',params=[]) => {
 	/*********************/
 
 	const Cmd = new cmdClass(cmd,params);
-	const res = await Cmd.runCommand();
+	let res = ''
+	if(cmd === 'ow'){
+		const author = await User.findOne({ snowflake: message.author.id })
+		if(!author) {
+			message.channel.send('UH-OH! Seems like you never asked me to save that information or I don\'t that specific username saved. Just DM me with `help` for more information how to command me to remember your usernames. :dog:')
+			return;
+		}
+		res = await Cmd.runCommand(author)
+
+	}
+	else {
+		res = await Cmd.runCommand();
+	}
 
 	message.channel.send(res);
 };

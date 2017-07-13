@@ -207,6 +207,7 @@ client.on('message', message => {
 
  		message.reply(`:dog: OK! I will remember your Twitter username as ${newUser.twitter}`)
  	}
+ 	
  })
 
 //Handle 'Who/What are you?' mentions

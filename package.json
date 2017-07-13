@@ -33,6 +33,7 @@
     "newsapi": "^1.0.2",
     "nodemon": "^1.11.0",
     "openweather-apis": "^3.3.2",
+    "overwatch-api": "^0.2.1",
     "overwatch-js": "^1.5.2",
     "path": "^0.12.7",
     "path-exists": "^3.0.0",
