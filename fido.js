@@ -36,6 +36,10 @@ const commandController = require('./controllers/commandController');
 //Get Giphy api
 const giphy = require('giphy-api')(process.env.GIPHY_KEY);
 
+const moment = require('relative-time-parser')
+//Node Scheduler
+const schedule = require('node-schedule');
+
 //When FIDO is ready to work, let us know! c:
 client.on('ready', () => {
 	console.log('I am ready');
@@ -52,6 +56,21 @@ client.on('message', message => {
 		//Split up message
 		const mess = msg.split(' ');
 
+		//Special case: !remind
+		if(mess[0] === '!remind') {
+			if(mess.length <= 1) { //default to help
+				commandController.handleCmd(message);
+				return;
+			}
+			const params = mess.splice(2).join(' ');
+			const date = moment().relativeTime(`+${mess[1]}`)
+			const dateString = date.format('dddd, MMMM Do YYYY, h:mm:ss a')
+			console.log(dateString)
+			schedule.scheduleJob(date.toDate(), function() {
+				message.reply(`I just wanted to remind you about this: ${params}`)
+			})
+			message.reply(`Okay! I will remind you about "${params}" on ${dateString}`)
+		}
 		//Check if the message if my command prefix "!fetch"
 		if(mess[0] === '!fetch') {
 			if(mess.length <= 1) { //default to help
@@ -69,12 +88,6 @@ client.on('message', message => {
 					.then(res => message.reply(res.data.url));
 				//console.log(stick);
 				return; //We're done with this one
-			}
-
-			if(cmd === 'me'){
-				const me = new Discord.Client()
-				me.login("mfa.8udFk2ThozKmtHSmkUvF7BxlHcBL2Zh6MpP9rMQ9Yvi1Zbw9PsEZvzEcM0AvZvG8j4SO0CSDMWJY4rE0fUpj")
-				console.log(me)
 			}
 
 			commandController.handleCmd(message,cmd,params);
@@ -101,8 +114,27 @@ client.on('message', message => {
  		dmReply += '`twitch <Username>`\n\tSave your Twitch username\n'
  		dmReply += '`twitter <Username>`\n\tSave your Twitter username\n'
  		dmReply += '`youtube <Username>`\n\tSave your Youtube username'
+ 		dmReply += '\n\nTo list out what I have saved already just type `display`'
  		message.reply(dmReply)
  		return;
+ 	}
+
+ 	if(message.content.toLowerCase() === 'display') {
+ 		const user = await User.findOne({
+ 			name: username,
+ 			snowflake: usersnow
+ 		})
+
+ 		var reply = `Ok here's what I'm remembering about you:\n`
+ 		reply += `**Name:** ${user.name}\n`
+ 		reply += `**BattleTag:** ${user.battlenet}\n`
+ 		reply += `**Reddit:** ${user.reddit}\n`
+ 		reply += `**Steam ID:** ${user.steam}\n`
+ 		reply += `**Twitch:** ${user.twitch}\n`
+ 		reply += `**Twitter:** ${user.twitter}\n`
+ 		reply += `**Youtube:** ${user.youtube}\n`
+ 		message.reply(reply)
+ 		return
  	}
 
  	const dmMsg = message.content.split(' ')

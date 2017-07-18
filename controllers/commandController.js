@@ -42,7 +42,7 @@ exports.handleCmd = async (message,cmd='help',params=[]) => {
 
 	const Cmd = new cmdClass(cmd,params);
 	let res = ''
-	if(cmd === 'ow'){
+	if(cmd === 'ow' || cmd === 'me'){
 		const author = await User.findOne({ snowflake: message.author.id })
 		if(!author) {
 			message.channel.send('UH-OH! Seems like you never asked me to save that information or I don\'t that specific username saved. Just DM me with `help` for more information how to command me to remember your usernames. :dog:')
