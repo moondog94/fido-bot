@@ -21,12 +21,27 @@ class Overwatch extends Command {
         const owProfilePromise = rp(profileURI)
         const owStatsPromise = rp(statsURI)
 
-        const [owProfile, owStats] = await Promise.all([owProfilePromise, owStatsPromise]);
+        var [owProfile, owStats] = await Promise.all([owProfilePromise, owStatsPromise]);
 
-        console.log(owProfile)
+        if(owProfile === 'Not Found')
+            return 'UH-OH! Seems like that Battlenet account asked me to remember doesn\'t exist or you don\'t actually Overwatch to have any stats. :('
         
-        var reply = `**Username:** ${owProfile.username}\n`
-        reply += `\t**Level:** ${owProfile.level}`
+        owProfile = JSON.parse(owProfile)
+        owStats = JSON.parse(owStats)
+
+        var reply = `**Username:** ${owProfile.username}`
+        reply += `\t**Level:** ${owProfile.level}\n`
+        reply += '__**Quick Play Stats**__\n'
+        reply += `\t**Wins:** ${owProfile.games.quickplay.won}\n\t**Playtime:** ${owProfile.playtime.quickplay}\n\t**Most Played Hero:** ${owStats.stats.top_heroes.quickplay[0].hero}\n`
+        reply += '__**Competitive Stats**__\n'
+        reply += `\t**Rank:** ${owProfile.competitive.rank}\n\t`
+        reply += `**Wins:** ${owProfile.games.competitive.won}\n\t`
+        reply += `**Lost:** ${owProfile.games.competitive.lost}\n\t`
+        reply += `**Draw:** ${owProfile.games.competitive.draw}\n\t`
+        reply += `**Playtime:** ${owProfile.playtime.competitive}\n\t`
+        reply += `**Most Played Hero:** ${owStats.stats.top_heroes.competitive[0].hero}`
+
+        return reply
     }
 };
 
