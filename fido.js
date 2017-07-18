@@ -62,7 +62,15 @@ client.on('message', message => {
 				commandController.handleCmd(message);
 				return;
 			}
+			if(!moment().isRelativeTimeFormat(`+${mess[1]}`)) {
+				message.channel.send("Seems like that's an invalid time format. Here's the proper usage:\n\t[duration][time suffix]\n\n\tValid time suffixes: s (seconds), m (minutes), d (days), w (weeks)\nExamples: 6d, 30s, 2w, 120m")
+				return
+			}
 			const params = mess.splice(2).join(' ');
+			if(params == "") {
+				message.channel.send('You need a message if you want me to remind of something :dog:')
+				return
+			}
 			const date = moment().relativeTime(`+${mess[1]}`)
 			const dateString = date.format('dddd, MMMM Do YYYY, h:mm:ss a')
 			console.log(dateString)

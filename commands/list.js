@@ -26,6 +26,8 @@ class List extends Command {
 			const command = new cmdClass();
 			res += `${command.info}\n`
 		})
+		res += '!remind [time] {message} 	Reminds you the message a specific time\n'
+		res += '\tValid time suffixes: s (seconds), m (minutes), d (days), w (weeks)'
 		res += '```'
 		return res;
 	}
