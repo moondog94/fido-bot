@@ -19,10 +19,13 @@ class Pokmeon extends Command {
         const id = this.params.join('')
         const pokeInfoPromise = P.getPokemonByName(id)
         const pokeSpeciesPromise =  P.getPokemonSpeciesByName(id)
+        var pokeInfoPromise = {}
+        var pokeSpeciesPromise = {}
+        var [pokeInfo, pokeSpecies] = [{}, {}]
         try {
-            const pokeInfoPromise = P.getPokemonByName(id)
-            const pokeSpeciesPromise =  P.getPokemonSpeciesByName(id)
-            const [pokeInfo, pokeSpecies] = await Promise.all([pokeInfoPromise, pokeSpeciesPromise])
+            pokeInfoPromise = P.getPokemonByName(id)
+            pokeSpeciesPromise =  P.getPokemonSpeciesByName(id)
+            [pokeInfo, pokeSpecies] = await Promise.all([pokeInfoPromise, pokeSpeciesPromise])
         } catch(e) {
             return 'Seems like I couldn\'t find that Pokémon :dog:'
         }
