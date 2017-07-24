@@ -13,10 +13,20 @@ class Pokmeon extends Command {
     }
 
     async runCommand(){
+        if (this.params.length < 1)
+            return 'Seems like I couldn\'t find that Pokémon :dog:'
+
         const id = this.params.join('')
         const pokeInfoPromise = P.getPokemonByName(id)
         const pokeSpeciesPromise =  P.getPokemonSpeciesByName(id)
-        const [pokeInfo, pokeSpecies] = await Promise.all([pokeInfoPromise, pokeSpeciesPromise])
+        try {
+            const pokeInfoPromise = P.getPokemonByName(id)
+            const pokeSpeciesPromise =  P.getPokemonSpeciesByName(id)
+            const [pokeInfo, pokeSpecies] = await Promise.all([pokeInfoPromise, pokeSpeciesPromise])
+        } catch(e) {
+            return 'Seems like I couldn\'t find that Pokémon :dog:'
+        }
+       
         var types = pokeInfo.types.sort((a,b) => { return a.slot - b.slot}).map(a => {return a.type.name.capitalize(true)}).join('/')
         
         var info = `**#${pokeInfo.id} __${pokeInfo.name.toUpperCase()}__**\n`
