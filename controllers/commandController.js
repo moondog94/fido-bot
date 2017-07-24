@@ -40,6 +40,9 @@ exports.handleCmd = async (message,cmd='help',params=[]) => {
 	}
 	/*********************/
 
+	if (cmd === 'answer')
+		message.channel.send('*Thinking...*')
+
 	const Cmd = new cmdClass(cmd,params);
 	let res = ''
 	if(cmd === 'ow' || cmd === 'me'){
