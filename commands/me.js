@@ -1,6 +1,7 @@
 const Command = require('./command')
 const mongoose = require('mongoose')
 const User = mongoose.model('User')
+const Discord = require('discord.js')
 
 class Me extends Command {
     constructor(cmd, params) {
@@ -8,15 +9,18 @@ class Me extends Command {
     }
 
     async runCommand(user){
-        var reply = `Ok here's what I'm remembering about you:\n`
-        reply += `**Name:** ${user.name}\n`
-        reply += `**BattleTag:** ${user.battlenet}\n`
-        reply += `**Reddit:** ${user.reddit}\n`
-        reply += `**Steam ID:** ${user.steam}\n`
-        reply += `**Twitch:** ${user.twitch}\n`
-        reply += `**Twitter:** ${user.twitter}\n`
-        reply += `**Youtube:** ${user.youtube}\n`
-        return reply
+        const embed = new Discord.RichEmbed()
+            .setAuthor(user.name)
+            .setColor(0x72a8ff)
+            .setDescription("Here's what I remember about you:")
+            .addField("Blizzard BattleTag", user.battlenet)
+            .addField("Reddit", user.reddit)
+            .addField("Steam ID", user.steam)
+            .addField("Twitch", user.twitch)
+            .addField("Twitter", user.twitter)
+            .addField("Youtube", user.youtube)
+
+        return embed
     }
 };
 
