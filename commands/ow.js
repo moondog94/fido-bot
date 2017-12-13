@@ -1,7 +1,6 @@
 const Command = require('./command')
 const rp = require('request-promise')
-
-
+const Discord = require('discord.js')
 
 
 class Overwatch extends Command {
@@ -28,20 +27,33 @@ class Overwatch extends Command {
         
         owProfile = JSON.parse(owProfile)
         owStats = JSON.parse(owStats)
+        console.log(owProfile)
+        // var reply = `**Username:** ${owProfile.username}`
+        // reply += `**Level:** ${owProfile.level}\n`
+        // reply += '__**Quick Play Stats**__\n'
+        var qp = `**Wins:** ${owProfile.games.quickplay.won}\n**Playtime:** ${owProfile.playtime.quickplay}\n**Most Played Hero:** ${owStats.stats.top_heroes.quickplay[0].hero}\n`
+        
+        var comp = `**Rank:** ${owProfile.competitive.rank}\n`
+        comp += `**Wins:** ${owProfile.games.competitive.won}\n`
+        comp += `**Lost:** ${owProfile.games.competitive.lost}\n`
+        comp += `**Draw:** ${owProfile.games.competitive.draw}\n`
+        comp += `**Playtime:** ${owProfile.playtime.competitive}\n`
+        comp += `**Most Played Hero:** ${owStats.stats.top_heroes.competitive[0].hero}`
 
-        var reply = `**Username:** ${owProfile.username}`
-        reply += `\t**Level:** ${owProfile.level}\n`
-        reply += '__**Quick Play Stats**__\n'
-        reply += `\t**Wins:** ${owProfile.games.quickplay.won}\n\t**Playtime:** ${owProfile.playtime.quickplay}\n\t**Most Played Hero:** ${owStats.stats.top_heroes.quickplay[0].hero}\n`
-        reply += '__**Competitive Stats**__\n'
-        reply += `\t**Rank:** ${owProfile.competitive.rank}\n\t`
-        reply += `**Wins:** ${owProfile.games.competitive.won}\n\t`
-        reply += `**Lost:** ${owProfile.games.competitive.lost}\n\t`
-        reply += `**Draw:** ${owProfile.games.competitive.draw}\n\t`
-        reply += `**Playtime:** ${owProfile.playtime.competitive}\n\t`
-        reply += `**Most Played Hero:** ${owStats.stats.top_heroes.competitive[0].hero}`
+        const embed = new Discord.RichEmbed()
+            .setAuthor(user.battlenet, owProfile.competitive.rank_img )
+            .setColor(0x72a8ff)
+            .setThumbnail(owProfile.portrait)
+            .addField("Level", `${owProfile.level}`)
+            .addBlankField()
+            .addField("Competitive Stats", comp)
+            .addBlankField()
+            .addField("Quick Play Stats", qp)
+            .setFooter("F.I.D.O", "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Emoji_u1f436.svg/2000px-Emoji_u1f436.svg.png")
+            .setTimestamp()
 
-        return reply
+        return embed
+
     }
 };
 

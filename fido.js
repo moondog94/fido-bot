@@ -43,6 +43,8 @@ const schedule = require('node-schedule');
 //When FIDO is ready to work, let us know! c:
 client.on('ready', () => {
 	console.log('I am ready');
+	// client.fetchVoiceRegions()
+	// 	.then(console.log)
 });
 
 //Handle commands

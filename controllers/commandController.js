@@ -51,7 +51,9 @@ exports.handleCmd = async (message,cmd='help',params=[]) => {
 			message.channel.send('UH-OH! Seems like you never asked me to save that information or I don\'t that specific username saved. Just DM me with `help` for more information how to command me to remember your usernames. :dog:')
 			return;
 		}
-		res = await Cmd.runCommand(author)
+		let embed = await Cmd.runCommand(author)
+		message.channel.send({embed})
+		return
 
 	}
 	else {
